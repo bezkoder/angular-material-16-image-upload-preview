@@ -1,0 +1,59 @@
+<div *ngFor="let progressInfo of progressInfos">
+  <span>{{ progressInfo.fileName }}</span>
+  <mat-toolbar class="progress-bar">
+    <mat-progress-bar
+      color="accent"
+      [value]="progressInfo.value"
+    ></mat-progress-bar>
+    <span class="progress">{{ progressInfo.value }}%</span>
+  </mat-toolbar>
+</div>
+
+<mat-form-field>
+  <div>
+    <mat-toolbar>
+      <input matInput [value]="selectedFileNames.length ? selectedFileNames.join(', ') : 'Select Images'" />
+
+      <button
+        mat-flat-button
+        color="primary"
+        [disabled]="!selectedFiles"
+        (click)="uploadFiles()"
+      >
+        Upload
+      </button>
+    </mat-toolbar>
+
+    <input
+      type="file"
+      id="fileInput"
+      name="fileInput"
+      accept="image/*" multiple 
+      (change)="selectFiles($event)"
+    />
+  </div>
+</mat-form-field>
+
+<div>
+  <img *ngFor='let preview of previews' [src]="preview" class="preview">
+</div>
+
+<div *ngIf="message.length" class="message">
+  <ul *ngFor="let msg of message; let i = index">
+    <li>{{ msg }}</li>
+  </ul>
+</div>
+
+<mat-card class="list-card">
+  <mat-card-header>
+    <mat-card-title>List of Images</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-grid-list cols="2" rowHeight="60px">
+      <div *ngFor="let image of imageInfos | async">
+        <mat-grid-tile><a href="{{ image.url }}" class="text-inside-grid">{{ image.name }}</a></mat-grid-tile>
+        <mat-grid-tile><img src="{{ image.url }}" alt="{{ image.name }}" class="image-inside-grid"/></mat-grid-tile>
+      </div>
+    </mat-grid-list>
+  </mat-card-content>
+</mat-card>
